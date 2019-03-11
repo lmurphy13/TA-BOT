@@ -3,7 +3,9 @@ package liam.TABOT;
 import javax.security.auth.login.LoginException;
 
 import liam.TABOT.Commands.Clear;
-import liam.TABOT.Commands.Commands;
+import liam.TABOT.Commands.Info;
+import liam.TABOT.Commands.ProjectDueDate;
+import liam.TABOT.Events.GuildMemberJoin;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -19,9 +21,10 @@ public class TABOT {
 		jda.getPresence().setStatus(OnlineStatus.IDLE);
 		jda.getPresence().setGame(Game.watching("OS students cry"));
 		
-		jda.addEventListener(new Commands());
 		jda.addEventListener(new Clear());
-		
+		jda.addEventListener(new Info());
+		jda.addEventListener(new GuildMemberJoin());
+		jda.addEventListener(new ProjectDueDate());
 	}
 	
 }

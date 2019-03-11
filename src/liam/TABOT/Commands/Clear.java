@@ -1,8 +1,8 @@
 package liam.TABOT.Commands;
 
 import java.util.List;
-
 import liam.TABOT.TABOT;
+
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -15,14 +15,27 @@ public class Clear extends ListenerAdapter {
 		if (args[0].equalsIgnoreCase(TABOT.prefix + "clear")) {
 			if (args.length < 2) {
 				// TODO error
+				EmbedBuilder usage = new EmbedBuilder();
+				usage.setColor(0xff3923);
+				usage.setTitle("Specify amount to delete");
+				usage.setDescription("Usage: `" + TABOT.prefix + "clear [# of messages]`");
+				event.getChannel().sendMessage(usage.build()).queue();
+				
 			} else {
 				
 				try {
 					List<Message> messages = event.getChannel().getHistory().retrievePast(Integer.parseInt(args[1])).complete();
 					event.getChannel().deleteMessages(messages).queue();
 					
+					// Success
+					EmbedBuilder success = new EmbedBuilder();
+					success.setColor(0x22ff2a);
+					success.setTitle("Successfully deleted " + args[1] + " messages.");
+					event.getChannel().sendMessage(success.build()).queue();
+					
+					
 				} catch (IllegalArgumentException e) {
-					if (e.toString().startsWith("java.lang.IllegalArgumentException: Message received")) {
+					if (e.toString().startsWith("java.lang.IllegalArgumentException: Message retrieval")) {
 						EmbedBuilder error = new EmbedBuilder();
 						error.setColor(0xff3923);
 						error.setTitle("Too many messages selected!");
